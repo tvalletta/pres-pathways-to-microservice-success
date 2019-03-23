@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>JavaScript Scope - Voter</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Thomas A. Valletta" />
+  <style>
+    @font-face {
+      font-family: 'fira_codeBold';
+      src: url('css/font/firacode_bold_macroman/FiraCode-Bold-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html,
+    body {
+      background-color: lightgray;
+      height: 100%;
+      margin: 0;
+      font-family: 'fira_codeBold';
+      text-shadow: 0 0 5px white;
+    }
+
+    .container {
+      opacity: 0;
+      transition: opacity .5s ease-in-out;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .row {
+      flex: 1 0 auto;
+      display: flex;
+    }
+
+    .cell {
+      border: 1px solid black;
+      flex: 1 0 auto;
+      font-size: 4em;
+      display: flex;
+      align-items: center;
+      border-radius: 3px;
+      margin: 3px;
+      text-decoration: none;
+      color: black;
+    }
+
+    .cell span {
+      text-align: center;
+      width: 100%;
+    }
+
+    .red {
+      background-color: red
+    }
+
+    .yellow {
+      background-color: yellow
+    }
+
+    .green {
+      background-color: green
+    }
+
+    .blue {
+      background-color: blue
+    }
+  </style>
+  <script type='text/javascript' src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io()
+    socket.on('ack', () => {
+      console.log('ack')
+      document.querySelector('.container').style.opacity = 1
+      socket.emit('register', 'voter')
+    })
+    function vote(value) {
+      socket.emit('vote', value, (data) => {
+        console.log(data)
+      })
+    }
+  </script>  
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <a href="#" onclick="vote('a')" class="cell red">
+        <span>A</span>
+      </a>
+      <a href="#" onclick="vote('b')" class="cell yellow">
+        <span>B</span>
+      </a>
+    </div>
+    <div class="row">
+      <a href="#" onclick="vote('c')" class="cell green">
+        <span>C</span>
+      </a>
+      <a href="#" onclick="vote('d')" class="cell blue">
+        <span>D</span>
+      </a>
+    </div>
+  </div>
+</body>
+
+</html>

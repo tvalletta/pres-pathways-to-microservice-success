@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'fira_codebold';
+    src: url('FiraCode-Bold-webfont.eot');
+    src: url('FiraCode-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('FiraCode-Bold-webfont.woff2') format('woff2'),
+         url('FiraCode-Bold-webfont.woff') format('woff'),
+         url('FiraCode-Bold-webfont.ttf') format('truetype'),
+         url('FiraCode-Bold-webfont.svg#fira_codebold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'fira_codemedium';
+    src: url('FiraCode-Medium-webfont.eot');
+    src: url('FiraCode-Medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('FiraCode-Medium-webfont.woff2') format('woff2'),
+         url('FiraCode-Medium-webfont.woff') format('woff'),
+         url('FiraCode-Medium-webfont.ttf') format('truetype'),
+         url('FiraCode-Medium-webfont.svg#fira_codemedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

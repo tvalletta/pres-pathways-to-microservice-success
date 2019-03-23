@@ -1,0 +1,14 @@
+{
+  "name": "pres-js-scopes",
+  "version": "1.0.0",
+  "main": "server/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server"
+  },
+  "dependencies": {
+    "express": "4.16.4",
+    "lodash": "4.17.11",
+    "socket.io": "2.2.0"
+  }
+}

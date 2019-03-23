@@ -1,0 +1,742 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>JavaScript Scopes</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Thomas A. Valletta" />
+  <link href="css/impress.css" rel="stylesheet" />
+  <link href="css/prism.css" rel="stylesheet" />
+  <style>
+    @font-face {
+      font-family: 'QlassikMediumRegular';
+      src: url('css/font/Qlassik-Medium/Qlassik_TB-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+
+    }
+
+    @font-face {
+      font-family: 'QlassikBoldRegular';
+      src: url('css/font/Qlassik-Medium/QlassikBold_TB-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+
+    }
+
+    @font-face {
+      font-family: 'Typewriter';
+      src: url('css/font/Typewriter/veteran_typewriter-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'fira_code';
+      src: url('css/font/firacode_regular_macroman/FiraCode-Regular-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'fira_codeMedium';
+      src: url('css/font/firacode_medium_macroman/FiraCode-Medium-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'fira_codeBold';
+      src: url('css/font/firacode_bold_macroman/FiraCode-Bold-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .step {
+      font-size: 2em;
+    }
+
+    .step.nofade {
+      opacity: 1;
+    }
+
+    .step.invis {
+      opacity: 0;
+    }
+
+    .step.invis.active {
+      opacity: 1;
+    }
+
+    h1 {
+      font-size: 128px;
+      font-weight: bold;
+      line-height: 164px;
+      text-shadow: 1px 1px 2px #16324F;
+      color: #FF8700;
+    }
+
+    h2 {
+      font-size: 96px;
+      line-height: 96px;
+      color: #2A628F;
+    }
+
+    h3 {
+      font-size: 64px;
+      line-height: 64px;
+      color: #16324F;
+    }
+
+    h4 {
+      font-size: 48px;
+      line-height: 48px;
+      color: #13293D;
+    }
+
+    h5 {
+      font-size: 32px;
+      line-height: 32px;
+    }
+
+    h6 {
+      font-size: 24px;
+      line-height: 24px;
+    }
+
+    hr {
+      border-color: #333;
+    }
+
+    .small {
+      font-size: 36px;
+      color: #2A628F;
+    }
+
+    .x-small {
+      font-size: 30px;
+      color: #16324F;
+    }
+
+    .xx-small {
+      font-size: 24px;
+      color: #13293D;
+    }
+
+    .xxx-small {
+      font-size: 18px;
+      color: #13293D;
+    }
+
+    .right {
+      float: right;
+      width: 320px;
+    }
+
+    .left {
+      float: left;
+      width: 320px;
+    }
+
+    em {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .blink {
+      animation: blinker 1s linear infinite;
+    }
+
+    @keyframes blinker {  
+      50% { opacity: 0; }
+    }
+
+    table {
+      font-size: .8em;
+      line-height: 2.5em;
+      width: 100%;
+    }
+
+    table tr {
+        border-bottom: 1px solid #333;
+    }
+
+    table th {
+        background-color: #333;
+        font-weight: bold;
+        font-size: 1.5em;
+        padding: 7px;
+        color: #fff;
+    }
+
+    table td {
+        padding: 7px;
+        text-align: center;
+    }
+
+    table td.footer {
+        color: #666;
+        text-align: center;
+        font-size: 0.6em;
+    }
+
+    #voter {
+      opacity: 0;
+      transition: opacity .2s ease-in-out;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+
+    .answer {
+
+    }
+
+    .answer > span {
+      border-radius: 4px;
+      margin: 0 11px;
+      padding: 7px 7px 4px 9px;
+    }
+
+    .red { background-color: red; }
+    .yellow { background-color: yellow; }
+    .green { background-color: green; }
+    .blue { background-color: blue; }
+    
+    .side-by-side {
+      width: 800px;
+    }
+    .side-by-side > .left, .side-by-side > .right {
+      width: 390px;
+      font-size: .6em;
+    }
+
+    .thin-inline-code code {
+      font-size: .7em;
+      padding: 4px 11px 0 11px !important;
+    }
+
+  </style>
+</head>
+
+<body>
+  <p class="fallback-message">
+    Your browser doesn't support impress.js. Try Chrome or Safari.
+  </p>
+  <div id="impress">
+
+    <div id="title" class="step stay" data-x="0" data-y="0">
+      <h2 style="text-align: center">Pathways to</h1>
+      <h1 style="text-align: center">Microservice</h1>
+      <h2 style="text-align: center">Success</h1>
+    </div>
+    
+    <div class="step skip clarify" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_083.png' style="position: absolute; top: 132px; left: 64px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 112px; left: 64px" />
+        <img src='img/isometricCity/Details/cityDetails_010.png' style="position: absolute; top: 100px; left: 101px" />
+        <img src='img/kenney_pirateKit/Isometric/chest_SW.png' style="position: absolute; top: 132px; left: 121px; width: 33.5px; height: 30px" />
+      </div>
+    </div>
+
+    <!-- <div class="step skip clarify" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 36px; left: 128px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 68px; left: 64px" />
+        <img src='img/isometricCity/Details/cityDetails_010.png' style="position: absolute; top: 68px; left: 100px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_078.png' style="position: absolute; top: 68px; left: 192px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_074.png' style="position: absolute; top: 100px; left: 0px" />
+        <img src='img/IsometricBuildings/PNG/buildingTiles_030.png' style="position: absolute; top: 68px; left: 128px" />
+        <img src='img/IsometricBuildings/PNG/buildingTiles_081.png' style="position: absolute; top: 61px; left: 146px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_079.png' style="position: absolute; top: 100px; left: 256px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_097.png' style="position: absolute; top: 132px; left: 64px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_078.png' style="position: absolute; top: 132px; left: 192px" />
+        <img src='img/isometricLandscape/PNG/landscapeTiles_074.png' style="position: absolute; top: 164px; left: 128px" />
+      </div>
+    </div> -->
+    
+    <div class="step invis" data-x="0" data-y="1350">
+      <div style="float: left; height: 600px; width: 400px">
+        <span style="text-decoration: underline">Microservice Architecture</span> 
+        is not a technological breakthrough that renders all previous 
+        architectural approaches obsolete. Is is just a set of trade-offs that, 
+        given the right discipline, improve the scalability and maintainability 
+        of complex systems.
+      </div>
+    </div>
+  
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMW   P R O S   &   C O N S   WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+
+    <div id="pros-and-cons" class="step stay" data-x="0" data-y="2500">
+      <table>
+        <tr>
+          <th>Pros</th>
+          <th>Cons</th>
+        </tr>
+        <tr>
+          <td>Scaling</td>
+          <td>Availability</td>
+        </tr>
+        <tr>
+          <td>Workload Partitioning</td>
+          <td>Operational Complexity</td>
+        </tr>
+        <tr>
+          <td>Release Independence</td>
+          <td>Release Coordination</td>
+        </tr>
+        <tr>
+          <td>Polyglot</td>
+          <td>Development Dependencies</td>
+        </tr>
+        <tr>
+          <td>Ownership & Accountability</td>
+          <td>Debugging Distributed Systems</td>
+        </tr>
+        <tr>
+          <td colspan="3" class="footer"></td>
+        </tr>
+      </table>
+    </div>
+  
+    <div class="step invis" data-x="-100" data-y="2500" data-z="250" data-rotate-y="70">
+      <div style="float: left; width: 440px">
+        <h2>Scale</h2>
+        <hr noshade />
+        <ul>
+          <li>Scaling a monolith comes down to scaling the worst performing peice</li>
+          <li>Scaling an individual service based on utilization makes sense</li>
+          <li>Auto scaling is more effective with smaller pieces</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="100" data-y="2500" data-z="250" data-rotate-y="-70">
+      <div style="float: right; width: 440px">
+        <h2>Availability</h2>
+        <hr noshade />
+        <ul>
+          <li>It is easier to keep one app running than 10/100/1000 services</li>
+          <li>Microservices require discipline in testing, monitoring and alerting</li>
+          <li>Microservices require a DevOps culture</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="-100" data-y="2500" data-z="250" data-rotate-y="70">
+      <div style="float: left; width: 440px">
+        <h2>Workload Partitioning</h2>
+        <hr noshade />
+        <ul>
+          <li>Decreased complexity/cognitive load</li>
+          <li>Smaller builds/test suites and shorter deploy times</li>
+          <li>Less risk for experimentation/innovation</li>
+          <li>Isolate impact of updating platform and dependencies</li>
+          <li>More "new" projects</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="100" data-y="2500" data-z="250" data-rotate-y="-70">
+      <div style="float: right; width: 440px">
+        <h2>Operational Complexity</h2>
+        <hr noshade />
+        <ul>
+          <li>Its a distributed system</li>
+          <li>Requires mature tooling
+            - Usually containerization and orchestration</li>
+          <li>Requires a mature deployment and integration model
+            - Requires test confidence*</li>
+          <li>Microservices require discipline in testing, monitoring and alerting</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="-100" data-y="2500" data-z="250" data-rotate-y="70">
+      <div style="float: left; width: 440px">
+        <h2>Release Independence</h2>
+        <hr noshade />
+        <ul>
+          <li>Independent versioning</li>
+          <li>Independent validation</li>
+          <li>Independent release</li>
+          <li>Continous delivery</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="100" data-y="2500" data-z="250" data-rotate-y="-70">
+      <div style="float: right; width: 440px">
+        <h2>Release Coordination</h2>
+        <hr noshade />
+        <ul>
+          <li>Thoughtful versioning schemes required</li>
+          <li>Coordinated feature flagging required</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="-100" data-y="2500" data-z="250" data-rotate-y="70">
+      <div style="float: left; width: 440px">
+        <h2>Polyglot</h2>
+        <hr noshade />
+        <ul>
+          <li>Microservices can use any technology that can communicate</li>
+          <li>Best of breed</li>
+          <li>Good for recruiting</li>
+          <li>Good for innovation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="100" data-y="2500" data-z="250" data-rotate-y="-70">
+      <div style="float: right; width: 440px">
+        <h2>Development Dependencies</h2>
+        <hr noshade />
+        <ul>
+          <li>Difficult to manage lots of dependent services</li>
+          <li>Requires tooling to make development enjoyable</li>
+          <li>Significantly reduces build times and test run times</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="-100" data-y="2500" data-z="250" data-rotate-y="70">
+      <div style="float: left; width: 440px">
+        <h2>Ownership & Accountability</h2>
+        <hr noshade />
+        <ul>
+          <li>Monoliths require hand-offs and specialization</li>
+          <li>Microservice teams can own all aspects of delivery</li>
+          <li>Always know who to call</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <div class="step invis" data-x="100" data-y="2500" data-z="250" data-rotate-y="-70">
+      <div style="float: right; width: 440px">
+        <h2>Debugging</h2>
+        <hr noshade />
+        <ul>
+          <li>Debugging distributed systems can be difficult</li>
+          <li>Requires tooling to make debugging possible</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="2500">&nbsp;</div>
+
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMW   P A T H W A Y S   WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+
+    <!-- MWMW   TEST CONFIDENCE -- STEP 0   WMWM -->
+  
+    <div class="step center invis" data-x="40" data-y="1180" data-show="dirt-step-1 dirt-step-2 dirt-step-3 dirt-step-4">
+      <div style="height: 600px; width: 400px; margin: auto;">
+        In order to be successful with microservices you will need to be disciplined in other modern software development patterns.
+      </div>
+    </div>
+  
+    <!-- MWMW   TEST CONFIDENCE -- STEP 1   WMWM -->
+
+    <div id="dirt-step-1" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_073.png' style="position: absolute; top: 187px; left: -12px" />
+      </div>
+    </div>  
+  
+    <div id="cicd" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 171px; left: -12px" />
+      </div>
+    </div>  
+
+    <div class="step invis" data-x="00" data-y="1160" data-show="cicd">
+      <div style="float: left; width: 400px;">
+        <h4>Continuous Delivery</h4><br />
+        As more microservices are added to an ecosystem big bang releases become impossible. Features must be coordinated through feature flags.
+      </div>
+    </div>
+      
+    <!-- MWMW   TEST CONFIDENCE -- STEP 2   WMWM -->
+
+    <div id="dirt-step-2" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_073.png' style="position: absolute; top: 226px; left: -88px" />
+      </div>
+    </div>  
+
+    <div id="test-confidence" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 210px; left: -88px" />
+      </div>
+    </div>  
+
+    <div class="step invis" data-x="-76" data-y="1200" data-show="test-confidence">
+      <div style="float: left; width: 400px;">
+        <h4>Test Confidence</h4><br />
+        In order to continuously deploy code you must have gates that prevent bad code from being promoted. You cannot trust your deployment gates if you do not trust your tests.
+      </div>
+    </div>
+        
+    <!-- MWMW   TEST CONFIDENCE -- STEP 3   WMWM -->
+
+    <div id="dirt-step-3" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_073.png' style="position: absolute; top: 265px; left: -164px" />
+      </div>
+    </div>  
+  
+    <div id="coverage" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 247px; left: -164px" />
+      </div>
+    </div>  
+
+    <div class="step invis" data-x="-152" data-y="1242" data-show="coverage">
+      <div style="float: left; width: 400px;">
+        <h4>Feature Coverage</h4><br />
+        To have confidence that your tests will catch bugs, you must have tests for every feature. You need 100% feature coverage.
+      </div>
+    </div>
+        
+    <!-- MWMW   TEST CONFIDENCE -- STEP 4   WMWM -->
+
+    <div id="dirt-step-4" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_073.png' style="position: absolute; top: 304px; left: -240px" />
+      </div>
+    </div>
+
+    <div id="reviews" class="step stay invis skip" data-x="0" data-y="1000">
+      <div style="position: absolute; right: 0px; height: 600px; width: 400px">
+        <img src='img/isometricLandscape/PNG/landscapeTiles_067.png' style="position: absolute; top: 284px; left: -240px" />
+      </div>
+    </div>  
+  
+    <div class="step invis" data-x="-228" data-y="1284" data-show="reviews">
+      <div style="float: left; width: 400px;">
+        <h4>Thorough Reviews</h4><br />
+        Coverage for coverage's sake erodes confidence. Thoughtful code reviews can foster ownership, cross-training and catch untested features.
+      </div>
+    </div>
+        
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMW   T H E   E N D   WMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+    <!-- MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWM -->
+
+
+    <div class="step invis" data-x="600" data-y="600"  data-z="200" data-rotate-x="-16" data-rotate-y="65"  data-rotate-z="-45">
+      <div class="right">
+        <br />
+        <br />
+        <br />
+        <br />
+        <h3>Thanks</h3>
+        Thomas A. Valletta
+        <h5 style="color: yellow">@tvalletta</h5>
+      </div>
+    </div>
+        
+  </div>
+
+  <div id="voter" width="200" height="200"></div>
+
+  <script type="text/javascript" src="js/impress.js"></script>
+  <script type='text/javascript' src="/socket.io/socket.io.js"></script>
+  <script type='text/javascript' src="js/prism.js"></script>
+  <script type='text/javascript' src="js/d3.v3.min.js"></script>
+  <script type='text/javascript' src="js/stack-vis.js"></script>
+  <script type='text/javascript' src="js/voter-pie.js"></script>
+
+  <script>
+    var socket = io()
+    var el = document.getElementById("impress");
+
+    let sv
+    var hidden = [];
+    var shown = [];
+    var highlighted = [];
+    var faded = [];
+
+    el.addEventListener("impress:stepenter", function (event) {
+
+      // --- stay ---
+      if (event.target.classList.contains('stay')) {
+        event.target.style.opacity = 1;
+      }
+
+      // --- data-show ---
+      if (event.target.hasAttribute('data-show')) {
+        var showList = event.target.getAttribute('data-show').split(' ');
+        for (var i = 0; i < showList.length; ++i) {
+          var $el = document.getElementById(showList[i]);
+          shown.push({ el: $el, opacity: $el.style.opacity });
+          $el.style.opacity = 1;
+        }
+      }
+
+      // --- data-hide ---
+      if (event.target.hasAttribute('data-hide')) {
+        var hideList = event.target.getAttribute('data-hide').split(' ');
+        for (var i = 0; i < hideList.length; ++i) {
+          var $el = document.getElementById(hideList[i]);
+          hidden.push({ el: $el, opacity: $el.style.opacity });
+          $el.style.opacity = 0;
+        }
+      }
+
+      // --- data-highlight ---
+      if (event.target.hasAttribute('data-highlight')) {
+        var highlightList = event.target.getAttribute('data-highlight').split(' ');
+        for (var i = 0; i < highlightList.length; ++i) {
+          var $el = document.getElementById(highlightList[i]);
+          highlighted.push($el);
+          $el.style['text-shadow'] = '0 0 5px white, 0 0 10px white, 0 0 30px white';
+        }
+      }
+
+      // --- data-fade ---
+      if (event.target.hasAttribute('data-fade')) {
+        var fadeList = event.target.getAttribute('data-fade').split(' ')
+        for (var i = 0; i < fadeList.length; ++i) {
+          var $el = document.getElementById(fadeList[i])
+          faded.push({ el: $el, opacity: $el.style.opacity })
+          $el.style.opacity = 0.2
+        }
+      }
+
+      // === CUSTOM CRAP ===z===z===z===z===z===z===z===z===z===z===z===z===z===
+
+      // --- data-show-stack ---
+      if (event.target.hasAttribute('data-show-stack')) {
+        const cfg = {
+          $el: event.target,
+          dataset: [],
+          dequeue: {
+            interval: 16,
+            count: .1
+          },
+          slow: 1
+        }
+        for (var i = 0; i < 100; ++i) {
+          cfg.dataset[i] = {
+            x: (Math.random() * 360) + 20,
+            y: (Math.random() * 560) + 20,
+            delay: i * 40
+          }
+        }
+        sv = runStackVisualization(cfg)
+      }
+      // --- data-show-stack ---
+
+    }, false)
+
+    el.addEventListener("impress:stepleave", function (event) {
+
+      // --- data-show ---
+      if (hidden.length) {
+        for (var i = 0; i < shown.length; ++i) {
+          shown[i].el.style.opacity = shown[i].opacity
+        }
+        shown = [];
+      }
+
+      // --- data-hide ---
+      if (hidden.length) {
+        for (var i = 0; i < hidden.length; ++i) {
+          hidden[i].el.style.opacity = hidden[i].opacity
+        }
+        hidden = [];
+      }
+
+      // --- data-highlighted ---
+      if (highlighted.length) {
+        for (var i = 0; i < highlighted.length; ++i) {
+          highlighted[i].style['text-shadow'] = 'none'
+        }
+        highlighted = [];
+      }
+
+      // --- data-faded ---
+      if (faded.length) {
+        for (var i = 0; i < faded.length; ++i) {
+          faded[i].el.style.opacity = faded[i].opacity
+        }
+        faded = []
+      }
+
+      // === CUSTOM CRAP ===z===z===z===z===z===z===z===z===z===z===z===z===z===
+
+      // --- data-show-stack ---
+      if (event.target.hasAttribute('data-show-stack')) {
+        let $svg = event.target.querySelector('svg')
+        $svg.remove()
+      }
+
+    }, false)
+
+    document.addEventListener("impress:init", function (event) {
+
+    })
+
+    impress().init()
+
+    // MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW
+    // --- VOTER STUFF ---
+    // MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW
+
+    const $voter = document.getElementById('voter')
+    const voter = voterPie({ $el: $voter })
+    document.addEventListener('keydown', event => {
+      switch (event.key) {
+        case 's':
+          $voter.style.opacity = 1
+          break
+        case 'h':
+          $voter.style.opacity = 0
+          break
+        case 'r':
+          console.log('reset()')
+          socket.emit('reset')
+          break
+      }
+    })
+
+    socket.on('ack', msg => {
+      console.log(msg)
+      socket.emit('register', 'reporter')
+    })
+
+    socket.on('update', data => {
+      console.log(data)
+      voter.update(data)
+      // voterPie({ $el: $voter, data })
+    })
+
+</script>
+</body>
+
+</html>
