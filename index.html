@@ -1108,14 +1108,12 @@
   <div id="voter" width="200" height="200"></div>
 
   <script type="text/javascript" src="js/impress.js"></script>
-  <script type='text/javascript' src="/socket.io/socket.io.js"></script>
   <script type='text/javascript' src="js/prism.js"></script>
   <script type='text/javascript' src="js/d3.v3.min.js"></script>
   <script type='text/javascript' src="js/stack-vis.js"></script>
   <script type='text/javascript' src="js/voter-pie.js"></script>
 
   <script>
-    var socket = io()
     var el = document.getElementById("impress");
 
     let sv
@@ -1249,39 +1247,6 @@
     })
 
     impress().init()
-
-    // MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW
-    // --- VOTER STUFF ---
-    // MWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMWMW
-
-    const $voter = document.getElementById('voter')
-    const voter = voterPie({ $el: $voter })
-    document.addEventListener('keydown', event => {
-      switch (event.key) {
-        case 's':
-          $voter.style.opacity = 1
-          break
-        case 'h':
-          $voter.style.opacity = 0
-          break
-        case 'r':
-          console.log('reset()')
-          socket.emit('reset')
-          break
-      }
-    })
-
-    socket.on('ack', msg => {
-      console.log(msg)
-      socket.emit('register', 'reporter')
-    })
-
-    socket.on('update', data => {
-      console.log(location.href)
-      console.log(data)
-      voter.update(data)
-      // voterPie({ $el: $voter, data })
-    })
 
 </script>
 </body>
